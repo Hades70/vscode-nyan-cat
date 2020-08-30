@@ -1,0 +1,134 @@
+{
+	"name": "nyancat",
+	"displayName": "nyan cat",
+	"description": "",
+	"version": "0.0.2",
+	"engines": {
+		"vscode": "^1.48.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.NyanCatRefresh",
+				"title": "Nyan Refresh"
+			},
+			{
+				"command": "extension.extension.NyanCatRotateForward",
+				"title": "Nyan rotate forward"
+			},
+			{
+				"command": "extension.extension.NyanCatRotateBackward",
+				"title": "Nyan rotate backward"
+			},
+			{
+				"command": "extension.NyanCatUninstall",
+				"title": "Nyan Uninstall"
+			}
+		],
+		"configuration":{
+            "title": "Nyan Cat Configuration",
+            "properties": {
+                "NyanCat.backgroundColor":{
+                    "title": "Nyan Cat area background color, default is transparent, it accepts any css color string",
+                    "type": "string",
+                    "default": "#0000FF"
+                },
+                "NyanCat.name":{
+                    "title": "Cat type name",
+					"type": "string",
+					"enum": [
+						"nyan-nyan",
+						"nyan-bday",
+						"nyan-breakfast",
+						"nyan-easter",
+						"nyan-GB",
+						"nyan-grumpy",
+						"nyan-jacksnyan",
+						"nyan-jazz",
+						"nyan-mexinyan",
+						"nyan-mummy",
+						"nyan-nyan",
+						"nyan-nyancoin",
+						"nyan-nyaninja",
+						"nyan-paddy",
+						"nyan-pikanyan",
+						"nyan-sadnyan",
+						"nyan-slomo",
+						"nyan-technyancolor",
+						"nyan-uhmurica",
+						"nyan-xmas",
+						"nyan-zombie"
+					],
+                    "default": "nyan-nyan"
+				},
+				"NyanCat.statusbar": {
+					"description": "Enable Status Indicator",
+					"type": "boolean",
+					"default": true
+				},
+				"NyanCat.policy": {
+					"description": "Disable vscode Content Policy (required if loading from URL)",
+					"type": "boolean",
+					"default": false
+				},
+				"NyanCat.dict": {
+					"description": "dictionary for word rotations",
+					"type": "array",
+					"default": [
+						["yes", "no"],
+						["true", "false"],
+						["public", "private"],
+						["1", "2", "3"]
+					]
+				}
+            }
+		},
+		"keybindings": [{
+							"command": "extension.NyanCatRotateForward",
+							"key": "ctrl+]",
+							"mac": "ctrl+]",
+							"when": "editorTextFocus"
+						},
+		  				{
+							"command": "extension.NyanCatRotateBackward",
+							"key": "ctrl+[",
+							"mac": "ctrl+[",
+							"when": "editorTextFocus"
+		  				}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./ && cp ./src/mini-styles.css ./out/styles.css",
+		"lint": "eslint src --ext ts",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"test": "node ./out/test/runTest.js",
+		"postinstall": "node ./node_modules/vscode/bin/install"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.48.0",
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.0",
+		"@types/node": "^14.0.27",
+		"eslint": "^7.6.0",
+		"@typescript-eslint/eslint-plugin": "^3.8.0",
+		"@typescript-eslint/parser": "^3.8.0",
+		"glob": "^7.1.6",
+		"mocha": "^8.0.1",
+		"typescript": "^3.8.3",
+		"vscode-test": "^1.4.0"
+	},
+	"dependencies": {
+		"file-url": "^3.0.0",
+		"minimist": "^1.2.5",
+		"vscode": "^1.1.37"
+	}
+}
