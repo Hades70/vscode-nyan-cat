@@ -104,6 +104,19 @@ export function activate(context: vscode.ExtensionContext) {
         }
     }
 
+    function scroll() {
+        const window = vscode.window.onDidChangeTextEditorVisibleRanges(() => {
+
+        });
+    }
+
+    function showActivity(config: any) {
+        BAR_ITEM.text = `$(${config.name}) $(${config.name}) $(${config.name})`;
+        setTimeout(() => {
+            updateConfig();
+        }, (3000));
+    }
+
     function rotateWordForward() {
         const config = vscode.workspace.getConfiguration("NyanCat");
         const dict = config.dict;
@@ -115,7 +128,7 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        var newWord = "";
+        let newWord = "";
         for (let ar of dict) {
             let arr: Array<string> = ar;
             let idx = arr.indexOf(highlight!.toLowerCase());
@@ -135,6 +148,10 @@ export function activate(context: vscode.ExtensionContext) {
         editor?.edit((editBuider) => {
             editBuider.replace(wordRange!, newWord);
         });
+
+        if (config.name) {
+            showActivity(config);
+        }
     }
 
     function rotateWordBackward() {
@@ -148,7 +165,7 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        var newWord = "";
+        let newWord = "";
         for (let ar of dict) {
             let arr: Array<string> = ar;
             let idx = arr.indexOf(highlight!.toLowerCase());
@@ -168,7 +185,12 @@ export function activate(context: vscode.ExtensionContext) {
         editor?.edit((editBuider) => {
             editBuider.replace(wordRange!, newWord);
         });
+        
+        if (config.name) {
+            showActivity(config);
+        }
     }
+
 }
 
 function prepareUninstall() {

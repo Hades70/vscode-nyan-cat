@@ -11,8 +11,6 @@ Choose nyan cat to display on status bar by defining the following in you config
 
 ![Nyan Cat bday](src/img/vday.gif)
 
-> Important: Before uninstalling use Nyan Uninstall action
-
 <br>
 
 ### Usage
@@ -22,19 +20,27 @@ Default key bindings
 
 Description | Command 
 --- | --- 
-rotate forward | ctrl+[
-rotate backward | ctrl+]
+rotate forward | ctrl + ]
+rotate backward | ctrl + [
 
 <br>
 
+## Uninstall
+<br>
 
+In command palette
+
+    > Nyan Uninstall
+
+> Important: Before uninstalling use Nyan Uninstall action
+
+<br>
 
 ## Requirements
 
-        vscode version ~1.48
+    vscode version ~1.48
 
 ## Extension Settings
-
 
 * `NyanCat.backgroundColor`: any css color
 * `NyanCat.name`: set to `nyan-(name)` to change cat
@@ -55,6 +61,12 @@ Initial release of Nyan Cat
 
 
 -----------------------------------------------------------------------------------------------------------
+<br>
 
+![Nyan Cat bday](src/img/nyan-parrot.gif)
+![Nyan Cat bday](src/img/default.gif)
+![Nyan Cat bday](src/img/emacs.gif)
+![Nyan Cat bday](src/img/rotating.gif)
+![Nyan Cat bday](src/img/thumbsup.gif)
 
 **Enjoy!**
