@@ -2,11 +2,14 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { dirname, normalize, basename } from 'path';
 import * as f from 'file-url';
+//import { ThemeConfig, getConfigValue, CSS_LEFT, CSS_TOP } from '../config/config';
+
 
 const DIR_PATH = normalize(`${dirname(require.main.filename)}/vs/workbench/`);
 const FILE_PATH = normalize(`${DIR_PATH}/workbench.desktop.main.css`);
 const BACKUP_PATH = normalize(`${DIR_PATH}/workbench.desktop.main.css.bak`);
 const styles = normalize(__dirname+'/styles.css');
+const BATMAN_STYLE = normalize(__dirname+'/batman.css');
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -62,6 +65,11 @@ export function activate(context: vscode.ExtensionContext) {
         if(config.name) {
             BAR_ITEM.text = `$(${config.name})`;
         }
+        if(config.batman_mode) {
+            injectBatmanCSS();
+        } else {
+            ejectBatmanCSS();
+        }
     }
 
     function backup() {
@@ -82,11 +90,6 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
 
-
-    function minifyCss(cssData: String) {
-        return "";
-    }
-
     function injectCSS() {
         let fileContent = fs.readFileSync(FILE_PATH, 'utf-8');
 
@@ -104,11 +107,37 @@ export function activate(context: vscode.ExtensionContext) {
         }
     }
 
-    function scroll() {
-        const window = vscode.window.onDidChangeTextEditorVisibleRanges(() => {
+    function injectBatmanCSS() {
+        let fileContent = fs.readFileSync(FILE_PATH, 'utf-8');
 
-        });
+        let inject = fs.readFileSync(BATMAN_STYLE, "utf-8");
+
+        if (!fileContent.includes('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGB')) {
+            fileContent = fileContent + 
+            " " +
+            inject;
+            fs.writeFileSync(FILE_PATH, fileContent, 'utf-8');
+
+        }
     }
+
+    function ejectBatmanCSS() {
+        let fileContent = fs.readFileSync(FILE_PATH, 'utf-8');
+
+        let inject = fs.readFileSync(BATMAN_STYLE, "utf-8");
+
+        if (fileContent.includes('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGB')) {
+            fileContent = fileContent.replace(inject, '');
+            fs.writeFileSync(FILE_PATH, fileContent, 'utf-8');
+
+        }
+    }
+
+    // function scroll() {
+    //     const window = vscode.window.onDidChangeTextEditorVisibleRanges(() => {
+
+    //     });
+    // }
 
     function showActivity(config: any) {
         BAR_ITEM.text = `$(${config.name}) $(${config.name}) $(${config.name})`;
@@ -196,12 +225,14 @@ export function activate(context: vscode.ExtensionContext) {
 function prepareUninstall() {
     try{
         fs.statSync(BACKUP_PATH);
+        fs.unlinkSync(FILE_PATH);
+        fs.renameSync(BACKUP_PATH, FILE_PATH);
     } catch(e) {
         return;
     }
-    fs.unlinkSync(FILE_PATH);
-    fs.renameSync(BACKUP_PATH, FILE_PATH);
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+    prepareUninstall();
+}

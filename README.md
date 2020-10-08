@@ -25,6 +25,17 @@ rotate backward | ctrl + [
 
 <br>
 
+## Requirements
+
+    vscode version ~1.48
+
+
+## Extension Settings
+
+* `NyanCat.backgroundColor`: any css color
+* `NyanCat.name`: set to `nyan-(name)` to change cat
+* `NyanCat.dict`: add custom set of words to rotate through
+
 ## Uninstall
 <br>
 
@@ -36,15 +47,6 @@ In command palette
 
 <br>
 
-## Requirements
-
-    vscode version ~1.48
-
-## Extension Settings
-
-* `NyanCat.backgroundColor`: any css color
-* `NyanCat.name`: set to `nyan-(name)` to change cat
-* `NyanCat.dict`: add custom set of words to rotate through
 
 ## Known Issues
 

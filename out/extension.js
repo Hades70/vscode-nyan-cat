@@ -4,10 +4,12 @@ exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const fs = require("fs");
 const path_1 = require("path");
+//import { ThemeConfig, getConfigValue, CSS_LEFT, CSS_TOP } from '../config/config';
 const DIR_PATH = path_1.normalize(`${path_1.dirname(require.main.filename)}/vs/workbench/`);
 const FILE_PATH = path_1.normalize(`${DIR_PATH}/workbench.desktop.main.css`);
 const BACKUP_PATH = path_1.normalize(`${DIR_PATH}/workbench.desktop.main.css.bak`);
 const styles = path_1.normalize(__dirname + '/styles.css');
+const BATMAN_STYLE = path_1.normalize(__dirname + '/batman.css');
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -51,6 +53,12 @@ function activate(context) {
         if (config.name) {
             BAR_ITEM.text = `$(${config.name})`;
         }
+        if (config.batman_mode) {
+            injectBatmanCSS();
+        }
+        else {
+            ejectBatmanCSS();
+        }
     }
     function backup() {
         try {
@@ -82,6 +90,24 @@ function activate(context) {
             fileContent = fileContent +
                 " " +
                 inject;
+            fs.writeFileSync(FILE_PATH, fileContent, 'utf-8');
+        }
+    }
+    function injectBatmanCSS() {
+        let fileContent = fs.readFileSync(FILE_PATH, 'utf-8');
+        let inject = fs.readFileSync(BATMAN_STYLE, "utf-8");
+        if (!fileContent.includes('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGB')) {
+            fileContent = fileContent +
+                " " +
+                inject;
+            fs.writeFileSync(FILE_PATH, fileContent, 'utf-8');
+        }
+    }
+    function ejectBatmanCSS() {
+        let fileContent = fs.readFileSync(FILE_PATH, 'utf-8');
+        let inject = fs.readFileSync(BATMAN_STYLE, "utf-8");
+        if (fileContent.includes('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGB')) {
+            fileContent = fileContent.replace(inject, '');
             fs.writeFileSync(FILE_PATH, fileContent, 'utf-8');
         }
     }
@@ -166,14 +192,16 @@ exports.activate = activate;
 function prepareUninstall() {
     try {
         fs.statSync(BACKUP_PATH);
+        fs.unlinkSync(FILE_PATH);
+        fs.renameSync(BACKUP_PATH, FILE_PATH);
     }
     catch (e) {
         return;
     }
-    fs.unlinkSync(FILE_PATH);
-    fs.renameSync(BACKUP_PATH, FILE_PATH);
 }
 // this method is called when your extension is deactivated
-function deactivate() { }
+function deactivate() {
+    prepareUninstall();
+}
 exports.deactivate = deactivate;
 //# sourceMappingURL=extension.js.map

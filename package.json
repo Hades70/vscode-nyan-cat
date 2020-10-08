@@ -68,6 +68,11 @@
 					],
                     "default": "nyan-nyan"
 				},
+				"NyanCat.batman_mode": {
+					"description": "Enable batman mode with background glow",
+					"type": "boolean",
+					"default": false
+				},
 				"NyanCat.statusbar": {
 					"description": "Enable Status Indicator",
 					"type": "boolean",
